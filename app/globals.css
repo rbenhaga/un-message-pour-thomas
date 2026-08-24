@@ -1,0 +1,102 @@
+@import 'tailwindcss';
+
+:root { --ink:#332d28; --paper:#f7f0e6; --peach:#e97856; --peach-dark:#c75437; --line:#d9cdbf; }
+* { box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body { margin:0; background:var(--paper); color:var(--ink); font-family:Arial,Helvetica,sans-serif; }
+button,input,textarea { font:inherit; }
+button { cursor:pointer; }
+.font-plume { font-family:"Segoe Print","Bradley Hand","Comic Sans MS",cursive; }
+.font-classique { font-family:Georgia,"Times New Roman",serif; }
+.font-simple { font-family:Arial,Helvetica,sans-serif; }
+.site-shell { min-height:100vh; overflow:hidden; }
+.hero { height:72px; display:flex; align-items:center; justify-content:space-between; padding:0 clamp(22px,5vw,80px); border-bottom:1px solid var(--line); background:rgba(255,250,242,.76); backdrop-filter:blur(12px); position:relative; z-index:2; }
+.brand { color:var(--ink); text-decoration:none; font-family:Georgia,serif; font-size:20px; font-weight:700; letter-spacing:-.02em; }
+.brand span { color:var(--peach); font-size:16px; }
+.step-pill { border:1px solid var(--line); border-radius:999px; padding:8px 13px; font-size:11px; text-transform:uppercase; letter-spacing:.1em; color:#776d64; background:#fffaf5; }
+.intro { min-height:520px; padding:90px 24px 72px; text-align:center; position:relative; background:radial-gradient(circle at 50% 10%,rgba(255,255,255,.8),transparent 42%),linear-gradient(135deg,#f8efe3,#f3e8da); }
+.intro::before,.intro::after { content:""; position:absolute; border:1px solid rgba(119,133,109,.2); border-radius:55% 45%; width:180px; height:420px; transform:rotate(42deg); }
+.intro::before { left:-90px; top:110px; }
+.intro::after { right:-110px; top:10px; transform:rotate(-45deg); }
+.eyebrow { margin:0 0 15px; font-size:11px; color:var(--peach-dark); letter-spacing:.18em; text-transform:uppercase; font-weight:800; }
+.intro h1 { margin:0; font-family:Georgia,serif; font-size:clamp(48px,7.4vw,90px); line-height:.98; letter-spacing:-.055em; font-weight:500; }
+.intro h1 em { color:var(--peach); font-weight:400; }
+.intro-copy { max-width:610px; margin:30px auto 0; color:#6f655d; font-family:Georgia,serif; font-size:17px; line-height:1.75; }
+.scroll-cue { margin-top:44px; font-size:10px; text-transform:uppercase; letter-spacing:.16em; color:#897e74; }
+.scroll-cue span { display:block; margin-bottom:6px; font-size:20px; color:var(--peach); }
+.editor { display:grid; grid-template-columns:minmax(0,1.05fr) minmax(360px,.95fr); max-width:1220px; margin:0 auto; padding:94px 32px 110px; gap:clamp(52px,8vw,118px); }
+.form-panel { min-width:0; }
+.section-heading { display:flex; align-items:flex-start; gap:16px; margin-bottom:34px; }
+.section-heading>span { display:grid; place-items:center; width:34px; height:34px; border-radius:50%; flex:0 0 auto; color:white; background:var(--peach); font-size:11px; font-weight:800; }
+.section-heading h2 { margin:-3px 0 5px; font-family:Georgia,serif; font-size:30px; letter-spacing:-.035em; font-weight:500; }
+.section-heading p { margin:0; color:#887e74; font-size:13px; }
+.field-label,.font-picker legend { display:block; margin-bottom:9px; font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:.12em; color:#6f665e; }
+.text-input,.message-input,.typed-signature { width:100%; border:1px solid var(--line); background:rgba(255,252,247,.84); border-radius:9px; color:var(--ink); outline:none; transition:border-color .2s,box-shadow .2s; }
+.text-input { height:50px; padding:0 15px; margin-bottom:25px; }
+.message-input { min-height:210px; resize:vertical; padding:20px; font-size:19px; line-height:1.65; }
+.text-input:focus,.message-input:focus,.typed-signature:focus { border-color:var(--peach); box-shadow:0 0 0 3px rgba(233,120,86,.12); }
+.label-row { display:flex; justify-content:space-between; }
+.label-row span { font-size:11px; color:#9a9086; }
+.font-picker { border:0; padding:0; margin:27px 0 0; }
+.font-options { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+.font-options label { min-width:0; height:88px; border:1px solid var(--line); background:rgba(255,252,247,.7); border-radius:8px; padding:13px; display:flex; flex-direction:column; justify-content:space-between; cursor:pointer; transition:.2s; }
+.font-options label.selected { border-color:var(--peach); background:#fff8f1; box-shadow:inset 0 0 0 1px var(--peach); }
+.font-options input { position:absolute; opacity:0; pointer-events:none; }
+.font-options span { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:15px; }
+.font-options small { color:#9a9086; font-size:9px; text-transform:uppercase; letter-spacing:.11em; }
+.signature-heading { margin-top:63px; }
+.mode-switch { display:grid; grid-template-columns:1fr 1fr; background:#eadfd3; border-radius:8px; padding:4px; margin-bottom:13px; }
+.mode-switch button { height:42px; border:0; border-radius:6px; color:#847a70; background:transparent; font-size:12px; font-weight:700; }
+.mode-switch button.active { color:var(--ink); background:#fffaf4; box-shadow:0 2px 8px rgba(63,48,36,.08); }
+.signature-wrap { height:150px; position:relative; border:1px dashed #c8b9aa; border-radius:8px; background:rgba(255,252,247,.7); overflow:hidden; }
+.signature-wrap canvas { width:100%; height:100%; touch-action:none; position:relative; z-index:2; }
+.signature-wrap>span { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); color:#b8aa9c; font-family:Georgia,serif; font-style:italic; }
+.signature-wrap button { position:absolute; right:10px; top:10px; z-index:3; border:0; background:transparent; color:#978b80; font-size:10px; text-transform:uppercase; letter-spacing:.1em; }
+.typed-signature { height:92px; padding:0 24px; font-family:"Segoe Print",cursive; font-size:28px; }
+.submit-button { margin-top:28px; width:100%; min-height:57px; border:0; border-radius:7px; padding:0 20px; display:flex; justify-content:space-between; align-items:center; color:white; background:var(--peach); box-shadow:0 11px 25px rgba(199,84,55,.18); font-size:12px; text-transform:uppercase; letter-spacing:.12em; font-weight:800; transition:transform .2s,background .2s; }
+.submit-button:hover { transform:translateY(-2px); background:var(--peach-dark); }
+.submit-button:disabled { opacity:.65; cursor:wait; }
+.privacy-note { text-align:center; color:#968b81; font-size:10px; margin:13px 0 0; }
+.error-message { text-align:center; color:#a6412f; font-size:12px; }
+.preview-panel { min-width:0; }
+.preview-sticky { position:sticky; top:104px; }
+.preview-label { margin:0 0 12px; color:#8b8177; font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:.14em; }
+.message-card { aspect-ratio:85/55; position:relative; display:flex; flex-direction:column; padding:7.5%; background:#fffdf8; border:1px solid #d9cbbd; box-shadow:0 24px 55px rgba(65,48,34,.15); overflow:hidden; transform:rotate(1.1deg); }
+.message-card::after { content:""; position:absolute; inset:8px; border:1px solid rgba(119,133,109,.2); pointer-events:none; }
+.card-topline { display:flex; justify-content:space-between; color:var(--peach); font-size:clamp(7px,.8vw,10px); font-weight:800; letter-spacing:.14em; }
+.card-message { flex:1; margin:8% 3% 4%; font-size:clamp(13px,1.55vw,21px); line-height:1.45; overflow:hidden; white-space:pre-wrap; }
+.card-signature { margin-left:auto; min-width:38%; padding-top:5px; border-top:1px solid #d9cdbf; text-align:right; font-family:"Segoe Print",cursive; font-size:clamp(11px,1.25vw,18px); }
+.card-postmark { position:absolute; right:7%; bottom:15%; width:46px; height:46px; border:1px solid rgba(119,133,109,.35); border-radius:50%; display:grid; place-items:center; text-align:center; color:rgba(119,133,109,.5); font-size:7px; line-height:1.25; letter-spacing:.12em; transform:rotate(-12deg); }
+.preview-tip { display:flex; align-items:center; gap:10px; max-width:320px; margin:30px auto 0; color:#877c72; font-family:Georgia,serif; font-style:italic; font-size:12px; line-height:1.6; }
+.preview-tip span { color:var(--peach); font-size:19px; }
+footer { min-height:80px; border-top:1px solid var(--line); display:flex; justify-content:space-between; align-items:center; padding:0 clamp(24px,5vw,80px); color:#8f847a; font-size:10px; text-transform:uppercase; letter-spacing:.12em; }
+.success-page { min-height:100vh; padding:24px; display:grid; place-items:center; background:radial-gradient(circle at 50% 20%,#fffaf3 0,#f3e6d8 66%); }
+.success-card { width:min(510px,100%); text-align:center; padding:70px 45px; background:#fffdf8; border:1px solid var(--line); box-shadow:0 28px 70px rgba(65,48,34,.13); }
+.success-card h1 { font:500 clamp(38px,7vw,60px)/1.1 Georgia,serif; margin:0 0 20px; letter-spacing:-.05em; }
+.success-card>p:not(.eyebrow) { color:#776c62; line-height:1.7; }
+.success-stamp { width:66px; height:66px; margin:0 auto 28px; border:1px solid var(--peach); border-radius:50%; display:grid; place-items:center; color:var(--peach); font-size:25px; transform:rotate(-8deg); }
+.secondary-button { margin-top:24px; border:1px solid var(--line); border-radius:6px; background:var(--paper); padding:13px 18px; color:var(--ink); font-size:12px; }
+.atelier-page { min-height:100vh; background:#eee5da; padding:56px clamp(20px,5vw,70px) 90px; }
+.atelier-header { max-width:1120px; margin:0 auto 48px; display:flex; justify-content:space-between; align-items:flex-end; gap:24px; }
+.atelier-header h1 { font:500 clamp(38px,6vw,68px)/1 Georgia,serif; margin:0 0 12px; letter-spacing:-.05em; }
+.atelier-header p:last-child { margin:0; color:#847a70; }
+.atelier-header button { border:0; border-radius:6px; background:var(--peach); color:white; padding:15px 19px; font-size:11px; text-transform:uppercase; letter-spacing:.1em; font-weight:800; }
+.atelier-header button:disabled { opacity:.5; }
+.print-sheet { max-width:1120px; margin:0 auto; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:22px; }
+.print-card { aspect-ratio:85/55; background:#fffdf8; border:1px solid #d4c6b7; padding:24px 25px 20px; display:flex; flex-direction:column; position:relative; overflow:hidden; box-shadow:0 12px 28px rgba(55,41,29,.09); }
+.print-card::after { content:""; position:absolute; inset:7px; border:1px solid rgba(119,133,109,.18); pointer-events:none; }
+.print-topline { display:flex; justify-content:space-between; color:var(--peach); font-size:7px; font-weight:800; letter-spacing:.14em; }
+.print-message { flex:1; margin:13px 3px 7px; font-size:13px; line-height:1.4; white-space:pre-wrap; overflow:hidden; }
+.print-bottom { min-height:30px; display:flex; align-items:flex-end; justify-content:space-between; gap:12px; border-top:1px solid #e2d7cc; padding-top:4px; }
+.print-bottom img { display:block; max-width:48%; max-height:32px; object-fit:contain; object-position:right bottom; }
+.print-name { color:#8b8177; font-size:7px; text-transform:uppercase; letter-spacing:.1em; }
+.print-signature { font-family:"Segoe Print",cursive; font-size:12px; }
+.empty-state { max-width:600px; margin:100px auto; text-align:center; }
+.empty-state span { font-size:45px; color:var(--peach); }
+.empty-state h2 { font:500 32px Georgia,serif; }
+.empty-state p { color:#847a70; }
+@media (max-width:900px) { .print-sheet { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media (max-width:800px) { .step-pill{display:none}.intro{min-height:500px;padding-top:80px}.editor{grid-template-columns:1fr;padding:70px 20px 80px;gap:65px}.preview-panel{order:-1}.preview-sticky{position:static}.message-card{max-width:520px;margin:0 auto}.preview-label{text-align:center} }
+@media (max-width:600px) { .atelier-header{align-items:flex-start;flex-direction:column}.print-sheet{grid-template-columns:1fr} }
+@media (max-width:480px) { .hero{height:62px}.intro{min-height:470px;padding-left:20px;padding-right:20px}.intro-copy{font-size:15px}.font-options{gap:6px}.font-options label{padding:10px 8px}.section-heading h2{font-size:27px}footer{justify-content:center;text-align:center}footer span:last-child{display:none} }
+@media print { @page{size:A4 portrait;margin:10mm} body{background:white!important}.atelier-page{padding:0;background:white}.atelier-header{display:none}.print-sheet{display:grid;grid-template-columns:85mm 85mm;gap:7mm 8mm;max-width:none;margin:0}.print-card{width:85mm;height:55mm;break-inside:avoid;box-shadow:none;padding:6mm 6.5mm 5mm}.print-message{font-size:10pt}.print-bottom img{max-height:9mm} }
