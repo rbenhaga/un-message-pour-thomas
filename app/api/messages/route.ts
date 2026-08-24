@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server';
 
 const allowedFonts = new Set(['plume', 'classique', 'simple']);
 const allowedModes = new Set(['draw', 'text']);
+const atelierKey = 'carnet-olive-4827';
 
 async function ensureTable() {
   await env.DB.prepare(`
@@ -18,7 +19,10 @@ async function ensureTable() {
   `).run();
 }
 
-export async function GET() {
+export async function GET(request: Request) {
+  if (request.headers.get('x-atelier-key') !== atelierKey) {
+    return NextResponse.json({ error: 'Accès réservé' }, { status: 401 });
+  }
   await ensureTable();
   const result = await env.DB.prepare(`SELECT id, name, message, font, signature_mode AS signatureMode, signature, created_at AS createdAt FROM birthday_messages ORDER BY created_at ASC`).all();
   return NextResponse.json(result.results);
