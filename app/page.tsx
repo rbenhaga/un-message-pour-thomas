@@ -114,7 +114,7 @@ export default function Home() {
       <section className="intro" id="top">
         <p className="eyebrow">Son carnet de départ</p>
         <h1>Glisse un petit mot<br /><em>dans sa valise.</em></h1>
-        <p className="intro-copy">Thomas part bientôt en Erasmus. Écris-lui quelques mots qu’il pourra relire quand la maison lui manquera — nous nous occupons de l’imprimer et de le glisser dans son carnet.</p>
+        <p className="intro-copy">Thomas part bientôt en Erasmus. Écris-lui quelques mots qu’il pourra relire quand la maison lui manquera. Nous nous occupons de l’imprimer et de le glisser dans son carnet.</p>
         <div className="scroll-cue" aria-hidden="true"><span>↓</span> À toi d’écrire</div>
       </section>
 
@@ -154,10 +154,10 @@ export default function Home() {
 
         <aside className="preview-panel" aria-label="Aperçu de la carte"><div className="preview-sticky">
           <p className="preview-label">Aperçu · taille réelle à l’impression</p>
-          <article className="message-card"><div className="card-topline"><span>POUR THOMAS</span><span>♥</span></div>
+          <article className="message-card"><div className="card-topline"><span>ARCHIVVM · MMXXVI</span><span>✦ POUR THOMAS ✦</span></div>
             <p className={`card-message font-${font}`}>{message || 'Ton petit mot apparaîtra ici, comme sur la carte imprimée…'}</p>
             <div className="card-signature"><span>{signatureMode === 'text' && typedSignature ? typedSignature : name || 'Ta signature'}</span></div>
-            <div className="card-postmark">BON<br />VOYAGE</div>
+            <div className="card-postmark"><small>ROMA</small><b>SPQR</b><small>MMXXVI</small></div>
           </article>
           <p className="preview-tip"><span>✦</span> Nous imprimerons chaque mot au format carte de visite.</p>
         </div></aside>
