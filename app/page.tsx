@@ -154,10 +154,10 @@ export default function Home() {
 
         <aside className="preview-panel" aria-label="Aperçu de la carte"><div className="preview-sticky">
           <p className="preview-label">Aperçu · taille réelle à l’impression</p>
-          <article className="message-card"><div className="card-topline"><span>ARCHIVVM · MMXXVI</span><span>✦ POUR THOMAS ✦</span></div>
+          <article className="message-card"><div className="card-topline"><span>UN MOT POUR LA ROUTE</span><span>POUR THOMAS · 2026</span></div>
             <p className={`card-message font-${font}`}>{message || 'Ton petit mot apparaîtra ici, comme sur la carte imprimée…'}</p>
             <div className="card-signature"><span>{signatureMode === 'text' && typedSignature ? typedSignature : name || 'Ta signature'}</span></div>
-            <div className="card-postmark"><small>ROMA</small><b>SPQR</b><small>MMXXVI</small></div>
+            <div className="card-postmark"><small>BON</small><b>VOYAGE</b><small>ERASMUS</small></div>
           </article>
           <p className="preview-tip"><span>✦</span> Nous imprimerons chaque mot au format carte de visite.</p>
         </div></aside>

@@ -43,8 +43,8 @@ export default function AtelierPage() {
         <button onClick={() => window.print()} disabled={!messages.length}>Imprimer la planche</button></header>
       {messages.length === 0 ? <section className="empty-state"><span>✉</span><h2>La première enveloppe attend son mot.</h2><p>Partage la page principale aux proches de Thomas.</p></section> : (
         <section className="print-sheet">{messages.map((item) => <article className="print-card" key={item.id}>
-          <div className="print-topline"><span>ARCHIVVM · MMXXVI</span><span>✦ POUR THOMAS ✦</span></div><p className={`print-message font-${item.font}`}>{item.message}</p>
-          <div className="print-seal" aria-hidden="true"><small>ROMA</small><b>SPQR</b><small>MMXXVI</small></div>
+          <div className="print-topline"><span>UN MOT POUR LA ROUTE</span><span>POUR THOMAS · 2026</span></div><p className={`print-message font-${item.font}`}>{item.message}</p>
+          <div className="print-seal" aria-hidden="true"><small>BON</small><b>VOYAGE</b><small>ERASMUS</small></div>
           <div className="print-bottom"><span className="print-name">{item.name}</span>{item.signatureMode === 'draw' ? <img src={item.signature} alt={`Signature de ${item.name}`} /> : <span className="print-signature">{item.signature}</span>}</div>
         </article>)}</section>
       )}
