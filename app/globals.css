@@ -61,13 +61,13 @@ button { cursor:pointer; }
 .preview-panel { min-width:0; }
 .preview-sticky { position:sticky; top:104px; }
 .preview-label { margin:0 0 12px; color:#8b8177; font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:.14em; }
-.message-card { aspect-ratio:85/55; position:relative; isolation:isolate; display:flex; flex-direction:column; padding:8.5%; background:#d9c096; border:1px solid #7e6242; box-shadow:0 24px 55px rgba(65,48,34,.24),inset 0 0 35px rgba(83,52,22,.18); overflow:hidden; transform:rotate(1.1deg); }
-.message-card::before { content:""; position:absolute; inset:0; z-index:-2; background:radial-gradient(circle at 14% 18%,rgba(87,57,29,.18) 0 1px,transparent 2px),radial-gradient(circle at 81% 74%,rgba(110,71,33,.12) 0 1.5px,transparent 2.5px),repeating-linear-gradient(96deg,rgba(255,255,255,.035) 0 1px,transparent 1px 5px),linear-gradient(132deg,#ead8b4,#c9a878 52%,#e5cca3); background-size:37px 41px,51px 47px,auto,auto; mix-blend-mode:multiply; }
-.message-card::after { content:""; position:absolute; inset:9px; z-index:-1; border:5px double rgba(82,56,32,.68); outline:1px solid rgba(82,56,32,.32); outline-offset:-8px; pointer-events:none; }
-.card-topline { display:flex; justify-content:space-between; padding-bottom:7px; border-bottom:3px double rgba(83,57,32,.55); color:#614124; font:700 clamp(6px,.7vw,9px)/1 Georgia,serif; letter-spacing:.14em; }
+.message-card { aspect-ratio:85/55; position:relative; isolation:isolate; display:flex; flex-direction:column; padding:8.5%; background:#fff; border:1px solid #393530; box-shadow:0 24px 55px rgba(65,48,34,.15); overflow:hidden; transform:rotate(.6deg); }
+.message-card::before { content:""; position:absolute; inset:12px; z-index:-1; border:1px solid #393530; pointer-events:none; }
+.message-card::after { content:"•  Ω  •"; position:absolute; left:50%; bottom:11px; transform:translateX(-50%); color:#393530; background:#fff; padding:0 8px; font:700 8px/1 Georgia,serif; letter-spacing:.18em; pointer-events:none; }
+.card-topline { display:flex; justify-content:space-between; padding-bottom:7px; border-bottom:1px solid #393530; color:#393530; font:700 clamp(6px,.7vw,9px)/1 Georgia,serif; letter-spacing:.14em; }
 .card-message { flex:1; margin:8% 3% 4%; font-size:clamp(13px,1.55vw,21px); line-height:1.45; overflow:hidden; white-space:pre-wrap; }
 .card-signature { margin-left:auto; min-width:38%; padding-top:5px; border-top:1px solid #d9cdbf; text-align:right; font-family:"Segoe Print",cursive; font-size:clamp(11px,1.25vw,18px); }
-.card-postmark { position:absolute; right:7%; bottom:14%; width:58px; height:58px; border:2px solid rgba(123,45,31,.68); outline:1px solid rgba(123,45,31,.5); outline-offset:-5px; border-radius:50%; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; color:rgba(112,37,27,.74); line-height:1; letter-spacing:.1em; transform:rotate(-12deg); }
+.card-postmark { position:absolute; right:7%; bottom:14%; width:54px; height:54px; border:1px solid rgba(45,42,38,.72); outline:1px solid rgba(45,42,38,.5); outline-offset:-4px; border-radius:50%; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; color:rgba(45,42,38,.76); line-height:1; letter-spacing:.1em; transform:rotate(-9deg); }
 .card-postmark b { margin:2px 0; font:700 13px/1 Georgia,serif; letter-spacing:.05em; }
 .card-postmark small { font:700 5px/1 Arial,sans-serif; letter-spacing:.16em; }
 .preview-tip { display:flex; align-items:center; gap:10px; max-width:320px; margin:30px auto 0; color:#877c72; font-family:Georgia,serif; font-style:italic; font-size:12px; line-height:1.6; }
@@ -96,15 +96,16 @@ footer { min-height:80px; border-top:1px solid var(--line); display:flex; justif
 .atelier-header button { border:0; border-radius:6px; background:var(--peach); color:white; padding:15px 19px; font-size:11px; text-transform:uppercase; letter-spacing:.1em; font-weight:800; }
 .atelier-header button:disabled { opacity:.5; }
 .print-sheet { max-width:1120px; margin:0 auto; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:22px; }
-.print-card { aspect-ratio:85/55; background:radial-gradient(circle at 13% 17%,rgba(90,54,25,.13) 0 1px,transparent 2px),radial-gradient(circle at 79% 74%,rgba(90,54,25,.1) 0 1px,transparent 2px),linear-gradient(132deg,#ead8b4,#c9a878 52%,#e5cca3); background-size:31px 37px,43px 41px,auto; border:1px solid #745638; padding:25px 27px 22px; display:flex; flex-direction:column; position:relative; overflow:hidden; box-shadow:0 12px 28px rgba(55,41,29,.16),inset 0 0 22px rgba(83,52,22,.14); }
-.print-card::after { content:""; position:absolute; inset:7px; border:4px double rgba(82,56,32,.65); outline:1px solid rgba(82,56,32,.25); outline-offset:-7px; pointer-events:none; }
-.print-topline { display:flex; justify-content:space-between; padding-bottom:5px; border-bottom:3px double rgba(83,57,32,.5); color:#614124; font:700 6px/1 Georgia,serif; letter-spacing:.14em; }
+.print-card { aspect-ratio:85/55; background:#fff; border:1px solid #393530; padding:25px 27px 22px; display:flex; flex-direction:column; position:relative; overflow:hidden; box-shadow:0 12px 28px rgba(55,41,29,.09); }
+.print-card::before { content:""; position:absolute; inset:7px; border:1px solid #393530; pointer-events:none; }
+.print-card::after { content:"•  Ω  •"; position:absolute; left:50%; bottom:7px; transform:translateX(-50%); background:#fff; padding:0 6px; color:#393530; font:700 6px/1 Georgia,serif; letter-spacing:.15em; pointer-events:none; }
+.print-topline { display:flex; justify-content:space-between; padding-bottom:5px; border-bottom:1px solid #393530; color:#393530; font:700 6px/1 Georgia,serif; letter-spacing:.14em; }
 .print-message { flex:1; margin:12px 3px 7px; padding-right:39px; font-size:13px; line-height:1.4; white-space:pre-wrap; overflow:hidden; }
-.print-bottom { min-height:30px; display:flex; align-items:flex-end; justify-content:space-between; gap:12px; border-top:1px solid rgba(95,66,38,.4); padding-top:4px; }
+.print-bottom { min-height:30px; display:flex; align-items:flex-end; justify-content:space-between; gap:12px; border-top:1px solid #77716b; padding-top:4px; }
 .print-bottom img { display:block; max-width:48%; max-height:32px; object-fit:contain; object-position:right bottom; }
 .print-name { color:#8b8177; font-size:7px; text-transform:uppercase; letter-spacing:.1em; }
 .print-signature { font-family:"Segoe Print",cursive; font-size:12px; }
-.print-seal { position:absolute; right:20px; bottom:46px; width:42px; height:42px; border:1.5px solid rgba(117,39,29,.68); outline:1px solid rgba(117,39,29,.46); outline-offset:-4px; border-radius:50%; display:flex; flex-direction:column; align-items:center; justify-content:center; color:rgba(105,31,25,.74); transform:rotate(-11deg); }
+.print-seal { position:absolute; right:20px; bottom:46px; width:40px; height:40px; border:1px solid rgba(45,42,38,.72); outline:1px solid rgba(45,42,38,.48); outline-offset:-3px; border-radius:50%; display:flex; flex-direction:column; align-items:center; justify-content:center; color:rgba(45,42,38,.78); transform:rotate(-9deg); }
 .print-seal b { margin:1px 0; font:700 9px/1 Georgia,serif; }
 .print-seal small { font:700 4px/1 Arial,sans-serif; letter-spacing:.12em; }
 .empty-state { max-width:600px; margin:100px auto; text-align:center; }

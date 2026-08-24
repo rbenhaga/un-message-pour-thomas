@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Un mot pour Thomas',
     description: 'Glisse un petit mot dans sa valise.',
-    images: [{ url: 'https://un-mot-pour-thomas.rbenhaga.chatgpt.site/og.png', width: 1792, height: 939, alt: 'Un mot pour Thomas' }],
+    images: [{ url: 'https://un-mot-pour-thomas.rbenhaga.chatgpt.site/og.png', width: 1731, height: 909, alt: 'Un mot pour Thomas' }],
   },
   twitter: {
     card: 'summary_large_image',
