@@ -3,9 +3,9 @@
 import { FormEvent, PointerEvent, useEffect, useRef, useState } from 'react';
 
 const fonts = [
-  { id: 'plume', label: 'Plume', sample: 'Un mot doux…' },
-  { id: 'classique', label: 'Classique', sample: 'Un mot doux…' },
-  { id: 'simple', label: 'Simple', sample: 'Un mot doux…' },
+  { id: 'plume', label: 'Plume', sample: 'Bonne route' },
+  { id: 'classique', label: 'Classique', sample: 'Bonne route' },
+  { id: 'simple', label: 'Simple', sample: 'Bonne route' },
 ] as const;
 
 type FontId = (typeof fonts)[number]['id'];
@@ -18,6 +18,7 @@ export default function Home() {
   const [signatureMode, setSignatureMode] = useState<SignatureMode>('draw');
   const [typedSignature, setTypedSignature] = useState('');
   const [hasInk, setHasInk] = useState(false);
+  const [signatureWarning, setSignatureWarning] = useState(false);
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const drawingRef = useRef(false);
@@ -34,7 +35,7 @@ export default function Home() {
     ctx.scale(ratio, ratio);
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
-    ctx.strokeStyle = '#342e29';
+    ctx.strokeStyle = '#3f3529';
     ctx.lineWidth = 2.2;
   }, [signatureMode]);
 
@@ -64,7 +65,11 @@ export default function Home() {
     setHasInk(true);
   }
 
-  function stopDrawing() { drawingRef.current = false; }
+  function stopDrawing() {
+    if (!drawingRef.current) return;
+    drawingRef.current = false;
+    setSignatureWarning(false);
+  }
 
   function clearSignature() {
     const canvas = canvasRef.current;
@@ -76,7 +81,10 @@ export default function Home() {
   async function submit(event: FormEvent) {
     event.preventDefault();
     if (!name.trim() || !message.trim()) return;
-    if (signatureMode === 'draw' && !hasInk) return;
+    if (signatureMode === 'draw' && !hasInk) {
+      setSignatureWarning(true);
+      return;
+    }
     if (signatureMode === 'text' && !typedSignature.trim()) return;
     setStatus('sending');
     try {
@@ -95,10 +103,9 @@ export default function Home() {
   if (status === 'sent') {
     return (
       <main className="success-page"><section className="success-card">
-        <div className="success-stamp" aria-hidden="true">♥</div>
-        <p className="eyebrow">C’est dans l’enveloppe</p>
+        <p className="eyebrow">Message reçu</p>
         <h1>Merci, {name.trim()}.</h1>
-        <p>Ton mot est bien au chaud. Il rejoindra le carnet surprise de Thomas.</p>
+        <p>Ton mot sera imprimé avec les autres et remis à Thomas avant son départ.</p>
         <button className="secondary-button" onClick={() => window.location.reload()}>Écrire un autre mot</button>
       </section></main>
     );
@@ -106,27 +113,28 @@ export default function Home() {
 
   return (
     <main className="site-shell">
-      <header className="hero">
-        <a className="brand" href="#top" aria-label="Retour en haut">Pour Thomas <span>♥</span></a>
-        <div className="step-pill">3 minutes · une petite surprise</div>
+      <header className="topbar">
+        <span className="brand">Un message pour Thomas</span>
+        <span className="topbar-year">320 caractères maximum</span>
       </header>
 
       <section className="intro" id="top">
-        <p className="eyebrow">Son carnet de départ</p>
-        <h1>Glisse un petit mot<br /><em>dans sa valise.</em></h1>
-        <p className="intro-copy">Thomas part bientôt en Erasmus. Écris-lui quelques mots qu’il pourra relire quand la maison lui manquera. Nous nous occupons de l’imprimer et de le glisser dans son carnet.</p>
-        <div className="scroll-cue" aria-hidden="true"><span>↓</span> À toi d’écrire</div>
+        <p className="eyebrow">Départ en Erasmus · 2026</p>
+        <h1>Écris un message pour Thomas</h1>
+        <p className="intro-copy">
+          Choisis une écriture, ajoute ta signature et nous nous chargeons de l&rsquo;impression.
+        </p>
       </section>
 
       <form className="editor" onSubmit={submit}>
         <div className="form-panel">
-          <div className="section-heading"><span>01</span><div><h2>Ton petit mot</h2><p>Quelques lignes suffisent, promis.</p></div></div>
+          <div className="section-heading"><span>01</span><div><h2>Le message</h2><p>Quelques lignes suffisent.</p></div></div>
           <label className="field-label" htmlFor="name">Ton prénom</label>
           <input id="name" className="text-input" maxLength={42} value={name} onChange={(e) => setName(e.target.value)} placeholder="Camille" required />
           <div className="label-row"><label className="field-label" htmlFor="message">Ton message</label><span>{message.length}/320</span></div>
-          <textarea id="message" className={`message-input font-${font}`} maxLength={320} value={message} onChange={(e) => setMessage(e.target.value)} placeholder="Thomas, n’oublie jamais que…" required />
+          <textarea id="message" className={`message-input font-${font}`} maxLength={320} value={message} onChange={(e) => setMessage(e.target.value)} placeholder="Écris ici" required />
 
-          <fieldset className="font-picker"><legend>Choisis ton écriture</legend><div className="font-options">
+          <fieldset className="font-picker"><legend>L&rsquo;écriture</legend><div className="font-options">
             {fonts.map((item) => (
               <label key={item.id} className={font === item.id ? 'selected' : ''}>
                 <input type="radio" name="font" value={item.id} checked={font === item.id} onChange={() => setFont(item.id)} />
@@ -135,10 +143,10 @@ export default function Home() {
             ))}
           </div></fieldset>
 
-          <div className="section-heading signature-heading"><span>02</span><div><h2>Ta signature</h2><p>Au doigt, à la souris, ou tout simplement au clavier.</p></div></div>
+          <div className="section-heading signature-heading"><span>02</span><div><h2>La signature</h2><p>Au doigt, à la souris ou au clavier.</p></div></div>
           <div className="mode-switch" role="group" aria-label="Mode de signature">
-            <button type="button" className={signatureMode === 'draw' ? 'active' : ''} onClick={() => setSignatureMode('draw')}>✎ Signer au doigt</button>
-            <button type="button" className={signatureMode === 'text' ? 'active' : ''} onClick={() => setSignatureMode('text')}>Aa Écrire mon nom</button>
+            <button type="button" className={signatureMode === 'draw' ? 'active' : ''} onClick={() => setSignatureMode('draw')}>Signer à la main</button>
+            <button type="button" className={signatureMode === 'text' ? 'active' : ''} onClick={() => setSignatureMode('text')}>Écrire mon nom</button>
           </div>
           {signatureMode === 'draw' ? (
             <div className="signature-wrap"><canvas ref={canvasRef} aria-label="Zone pour dessiner ta signature" onPointerDown={startDrawing} onPointerMove={draw} onPointerUp={stopDrawing} onPointerCancel={stopDrawing} />
@@ -146,23 +154,17 @@ export default function Home() {
           ) : (
             <input className="typed-signature" maxLength={54} value={typedSignature} onChange={(e) => setTypedSignature(e.target.value)} placeholder="Ta signature" required />
           )}
+          {signatureWarning && <p className="field-warning" role="alert">Ajoute ta signature avant d&rsquo;envoyer.</p>}
 
-          <button className="submit-button" type="submit" disabled={status === 'sending'}><span>{status === 'sending' ? 'Envoi en cours…' : 'Glisser dans l’enveloppe'}</span><span aria-hidden="true">→</span></button>
-          {status === 'error' && <p className="error-message" role="alert">Le mot n’est pas parti. Réessaie dans un instant.</p>}
-          <p className="privacy-note">🔒 Ton mot restera une surprise jusqu’au jour J.</p>
+          <button className="submit-button" type="submit" disabled={status === 'sending'}>
+            {status === 'sending' ? 'Envoi en cours' : 'Envoyer le message'}
+          </button>
+          {status === 'error' && <p className="error-message" role="alert">Le message n&rsquo;est pas parti. Réessaie dans un instant.</p>}
+          <p className="privacy-note">Le message n&rsquo;est visible que par les organisateurs.</p>
         </div>
 
-        <aside className="preview-panel" aria-label="Aperçu de la carte"><div className="preview-sticky">
-          <p className="preview-label">Aperçu · taille réelle à l’impression</p>
-          <article className="message-card"><div className="card-topline"><span>UN MOT POUR LA ROUTE</span><span>POUR THOMAS · 2026</span></div>
-            <p className={`card-message font-${font}`}>{message || 'Ton petit mot apparaîtra ici, comme sur la carte imprimée…'}</p>
-            <div className="card-signature"><span>{signatureMode === 'text' && typedSignature ? typedSignature : name || 'Ta signature'}</span></div>
-            <div className="card-postmark"><small>BON</small><b>VOYAGE</b><small>ERASMUS</small></div>
-          </article>
-          <p className="preview-tip"><span>✦</span> Nous imprimerons chaque mot au format carte de visite.</p>
-        </div></aside>
       </form>
-      <footer><span>Fait avec beaucoup d’amour</span><span>pour Thomas · 2026</span></footer>
+      <footer><span>Un message pour Thomas</span><span>2026</span></footer>
     </main>
   );
 }

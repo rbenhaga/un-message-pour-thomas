@@ -1,8 +1,38 @@
 'use client';
 
 import { FormEvent, useState } from 'react';
+import { CardBack, CardFront, type CardFont } from '../components/card';
 
-type Message = { id: string; name: string; message: string; font: 'plume' | 'classique' | 'simple'; signatureMode: 'draw' | 'text'; signature: string; createdAt: string };
+type Message = {
+  id: string;
+  name: string;
+  message: string;
+  font: CardFont;
+  signatureMode: 'draw' | 'text';
+  signature: string;
+  createdAt: string;
+};
+
+type Slot = Message | null;
+const cardsPerSheet = 8;
+
+function createSheets(messages: Message[]) {
+  const sheets: Slot[][] = [];
+  for (let index = 0; index < messages.length; index += cardsPerSheet) {
+    const sheet: Slot[] = messages.slice(index, index + cardsPerSheet);
+    while (sheet.length < cardsPerSheet) sheet.push(null);
+    sheets.push(sheet);
+  }
+  return sheets;
+}
+
+function mirrorColumns(front: Slot[]) {
+  const back: Slot[] = [];
+  for (let index = 0; index < front.length; index += 2) {
+    back.push(front[index + 1], front[index]);
+  }
+  return back;
+}
 
 export default function AtelierPage() {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -24,30 +54,60 @@ export default function AtelierPage() {
     finally { setLoading(false); }
   }
 
+  function downloadMessages() {
+    const blob = new Blob([JSON.stringify(messages, null, 2)], { type: 'application/json;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `messages-thomas-${new Date().toISOString().slice(0, 10)}.json`;
+    link.click();
+    URL.revokeObjectURL(url);
+  }
+
   if (!authorized) {
     return <main className="atelier-login"><form onSubmit={openAtelier}>
-      <span className="login-envelope" aria-hidden="true">✉</span>
-      <p className="eyebrow">L’atelier secret</p>
-      <h1>Mot de passe,<br />s’il vous plaît.</h1>
-      <p>Les petits mots sont bien gardés jusqu’au jour J.</p>
-      <label htmlFor="atelier-key">Mot de passe de l’atelier</label>
-      <input id="atelier-key" type="password" value={key} onChange={(e) => setKey(e.target.value)} autoComplete="current-password" required />
-      <button type="submit" disabled={loading}>{loading ? 'Ouverture…' : 'Ouvrir les enveloppes'}</button>
-      {error && <strong role="alert">Ce mot de passe n’ouvre pas l’atelier.</strong>}
+      <p className="eyebrow">Accès organisateur</p>
+      <h1>Atelier d&rsquo;impression</h1>
+      <p>Entre le mot de passe pour consulter et imprimer les messages.</p>
+      <label htmlFor="atelier-key">Mot de passe</label>
+      <input id="atelier-key" type="password" value={key} onChange={(event) => setKey(event.target.value)} autoComplete="current-password" required />
+      <button type="submit" disabled={loading}>{loading ? 'Ouverture' : 'Ouvrir l’atelier'}</button>
+      {error && <strong role="alert">Mot de passe incorrect.</strong>}
     </form></main>;
   }
 
-  return (
-    <main className="atelier-page">
-      <header className="atelier-header"><div><p className="eyebrow">L’atelier secret</p><h1>Les mots pour Thomas</h1><p>{messages.length} mot{messages.length > 1 ? 's' : ''} récolté{messages.length > 1 ? 's' : ''}</p></div>
-        <button onClick={() => window.print()} disabled={!messages.length}>Imprimer la planche</button></header>
-      {messages.length === 0 ? <section className="empty-state"><span>✉</span><h2>La première enveloppe attend son mot.</h2><p>Partage la page principale aux proches de Thomas.</p></section> : (
-        <section className="print-sheet">{messages.map((item) => <article className="print-card" key={item.id}>
-          <div className="print-topline"><span>UN MOT POUR LA ROUTE</span><span>POUR THOMAS · 2026</span></div><p className={`print-message font-${item.font}`}>{item.message}</p>
-          <div className="print-seal" aria-hidden="true"><small>BON</small><b>VOYAGE</b><small>ERASMUS</small></div>
-          <div className="print-bottom"><span className="print-name">{item.name}</span>{item.signatureMode === 'draw' ? <img src={item.signature} alt={`Signature de ${item.name}`} /> : <span className="print-signature">{item.signature}</span>}</div>
-        </article>)}</section>
-      )}
-    </main>
-  );
+  const sheets = createSheets(messages);
+
+  return <main className="atelier-page">
+    <header className="atelier-header">
+      <div><p className="eyebrow">Atelier d&rsquo;impression</p><h1>Les planches</h1><p>{messages.length} message{messages.length > 1 ? 's' : ''} à imprimer</p></div>
+      <div className="atelier-actions">
+        <button className="secondary" onClick={downloadMessages} disabled={!messages.length}>Télécharger les messages</button>
+        <button onClick={() => window.print()} disabled={!messages.length}>Imprimer recto verso</button>
+      </div>
+    </header>
+
+    <aside className="print-instructions">
+      <strong>Réglages d&rsquo;impression</strong>
+      <span>A4 portrait, recto verso, retourner sur le bord long, échelle 100 %, marges par défaut.</span>
+      <span>Chaque feuille contient 8 cartes de 85 x 55 mm. Les versos sont déjà inversés pour l&rsquo;alignement. Papier crème de 160 à 200 g conseillé.</span>
+    </aside>
+
+    {messages.length === 0 ? <section className="empty-state"><h2>Aucun message pour le moment.</h2></section> :
+      <div className="print-workspace">{sheets.map((frontSlots, sheetIndex) => {
+        const backSlots = mirrorColumns(frontSlots);
+        return <section className="sheet-pair" key={sheetIndex}>
+          <p className="sheet-label">Feuille {sheetIndex + 1}, rectos</p>
+          <div className="duplex-sheet front-sheet">{frontSlots.map((item, slotIndex) =>
+            <div className={`print-slot ${item ? '' : 'empty'}`} key={`front-${slotIndex}`}>
+              {item && <CardFront message={item.message} font={item.font} name={item.name} signature={{ mode: item.signatureMode, value: item.signature }} />}
+            </div>)}</div>
+          <p className="sheet-label">Feuille {sheetIndex + 1}, versos inversés</p>
+          <div className="duplex-sheet back-sheet">{backSlots.map((item, slotIndex) =>
+            <div className={`print-slot ${item ? '' : 'empty'}`} key={`back-${slotIndex}`}>
+              {item && <CardBack />}
+            </div>)}</div>
+        </section>;
+      })}</div>}
+  </main>;
 }

@@ -3,7 +3,6 @@ import { NextResponse } from 'next/server';
 
 const allowedFonts = new Set(['plume', 'classique', 'simple']);
 const allowedModes = new Set(['draw', 'text']);
-const atelierKey = 'carnet-olive-4827';
 
 async function ensureTable() {
   await env.DB.prepare(`
@@ -20,7 +19,10 @@ async function ensureTable() {
 }
 
 export async function GET(request: Request) {
-  if (request.headers.get('x-atelier-key') !== atelierKey) {
+  if (!env.ATELIER_KEY) {
+    return NextResponse.json({ error: 'Configuration organisateur manquante' }, { status: 503 });
+  }
+  if (request.headers.get('x-atelier-key') !== env.ATELIER_KEY) {
     return NextResponse.json({ error: 'Accès réservé' }, { status: 401 });
   }
   await ensureTable();
